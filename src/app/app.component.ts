@@ -50,8 +50,10 @@ export class AppComponent {
     } else {
       console.log(this.perguntas);
       console.log(this.form.value);
+      this.respostaServidor = new Array();
+
       this.http.post<String[]>(
-        'http://67.205.161.189:8000/match', 
+        'https://9b9f-67-205-161-189.ngrok.io/match', 
         JSON.stringify(this.form.value),
         {
           headers: { 'Content-Type': 'application/json' }, 
@@ -59,7 +61,7 @@ export class AppComponent {
       ).subscribe((resposta: String[]) => {
         console.log(resposta);
         this.respostaServidor = resposta;
-      });;
+      });
     }
   }
 
