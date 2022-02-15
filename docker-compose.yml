@@ -9,4 +9,4 @@ services:
       - ./:/app/
     ports:
       - 4200:4200
-    command: npm start
+    command: npm run build
