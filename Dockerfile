@@ -12,4 +12,4 @@ COPY ./ /app/
 
 ARG env=prod
 
-#RUN npm run build
+CMD npm run build

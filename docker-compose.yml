@@ -7,6 +7,14 @@ services:
       dockerfile: ./Dockerfile
     volumes:
       - ./:/app/
+    #ports:
+    #  - 4200:4200
+    #command: npm run build
+
+  nginx:
+    image: nginx:latest
     ports:
-      - 4200:4200
-    command: npm run build
+      - 80:80
+    volumes:
+      - ./dist/match/:/usr/share/nginx/html/
+
