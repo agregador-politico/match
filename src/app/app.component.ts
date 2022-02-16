@@ -53,7 +53,7 @@ export class AppComponent {
       this.respostaServidor = new Array();
 
       this.http.post<String[]>(
-        'https://9b9f-67-205-161-189.ngrok.io/match', 
+        'http://agregadorpolitico.com:8000', 
         JSON.stringify(this.form.value),
         {
           headers: { 'Content-Type': 'application/json' }, 
