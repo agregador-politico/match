@@ -17,4 +17,3 @@ services:
       - 80:80
     volumes:
       - ./dist/match/:/usr/share/nginx/html/
-
