@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  match:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./:/app/
+    #ports:
+    #  - 4200:4200
+    #command: npm run build
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./dist/match/:/usr/share/nginx/html/
