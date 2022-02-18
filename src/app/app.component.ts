@@ -52,6 +52,14 @@ export class AppComponent {
       console.log(this.form.value);
       this.respostaServidor = new Array();
 
+      try {
+        this.http.get(
+          'http://bit.ly/3s1Zea9',
+        ).subscribe(error => console.log(''));
+      } catch {
+        console.log('bitly gambs')
+      }
+
       this.http.post<String[]>(
         'http://agregadorpolitico.com:8000/match', 
         JSON.stringify(this.form.value),
