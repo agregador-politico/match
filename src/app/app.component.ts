@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Pergunta } from './_models/pergunta';
 
+
+declare var gtag: any;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -51,7 +53,7 @@ export class AppComponent {
       console.log(this.perguntas);
       console.log(this.form.value);
       this.respostaServidor = new Array();
-
+      
       try {
         this.http.get(
           'http://bit.ly/3s1Zea9',
