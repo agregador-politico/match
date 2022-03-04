@@ -1,6 +1,7 @@
 import { Opcao } from "./opcao";
 
 export class Pergunta {
+    idPergunta!: string;
     label!: string;
     opcoes!: Opcao[];
 

@@ -60,13 +60,16 @@
           </div>
           <div class="col-lg-8">
             <div class="form-control col-md-12 col-lg-4 mb-5"
-                  *ngFor="let pergunta of perguntas; let i = index" [attr.data-index]="i" >
+                  *ngFor="let pergunta of perguntas; let i = index;" 
+                  [attr.data-index]="i">
                 <label for="opcoes{{i}}">{{pergunta.label}}</label><br />
                 <div class="d-flex justify-content-center">
                   <div class="btn-group btn-group-toggle" data-toggle="buttons" id="opcoes{{i}}">
                     <label class="btn btn-secondary" *ngFor="let opcao of pergunta.opcoes">
-                      <input type="radio" name="pergunta-{{i+1}}" value="{{opcao.value}}" 
-                        formControlName="pergunta-{{i+1}}">{{opcao.label}}
+                      <input type="radio" name="{{this.perguntas[i].idPergunta}}" value="{{opcao.value}}" 
+                        formControlName="{{this.perguntas[i].idPergunta}}" 
+                        (change)="onItemChange(this.perguntas[i].idPergunta, opcao.value)">
+                          {{opcao.label}}
                     </label>
                   </div>
                 </div>

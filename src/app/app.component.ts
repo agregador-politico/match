@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Pergunta } from './_models/pergunta';
@@ -17,6 +17,7 @@ export class AppComponent {
   submitted = false;
   perguntas: Pergunta[] = new Array();
   respostaServidor: String[] = new Array();
+  hash: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,6 +28,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    this.hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     this.form = this.formBuilder.group({
       nome: [''],
       comentario: [''],
@@ -95,10 +97,34 @@ export class AppComponent {
       'Como você votaria no projeto do Teto de Gastos (PEC 241/2016)?'
     ]
 
+    let i = 1;
     perguntasTxt.forEach((perguntaTxt: string) => {
       let pergunta = new Pergunta();
+      pergunta.idPergunta = 'pergunta-' + i++;
       pergunta.label = perguntaTxt;
       this.perguntas.push(pergunta);
+    });
+  }
+  onItemChange(id_question: any, answer: any) {
+
+    let nome = this.form.getRawValue()['nome'];
+
+    this.http.post<String[]>(
+      'http://agregadorpolitico.com:8000/question', 
+      JSON.stringify(
+        {
+          "nome": nome,
+          "hash": this.hash,
+          "id_question": id_question,
+          "answer": answer
+        }
+      ),
+      {
+        headers: { 'Content-Type': 'application/json' }, 
+      }
+    ).subscribe((resposta: String[]) => {
+      console.log(resposta);
+      this.respostaServidor = resposta;
     });
   }
 }
