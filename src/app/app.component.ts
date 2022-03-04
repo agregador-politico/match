@@ -18,6 +18,7 @@ export class AppComponent {
   perguntas: Pergunta[] = new Array();
   respostaServidor: String[] = new Array();
   hash: string = '';
+  origem: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,6 +26,13 @@ export class AppComponent {
     private router: Router, 
     private http: HttpClient) {
       this.popularQuestionario();
+      this.route.queryParams.subscribe(params => {
+        this.origem = params['origem'];
+        if (!this.origem) {
+          this.origem = 'Direto';
+        }
+        console.log(this.origem);
+    });
   }
 
   ngOnInit() {
@@ -116,7 +124,8 @@ export class AppComponent {
           "nome": nome,
           "hash": this.hash,
           "id_question": id_question,
-          "answer": answer
+          "answer": answer,
+          "origem": this.origem,
         }
       ),
       {
