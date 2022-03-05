@@ -37,6 +37,22 @@ export class AppComponent {
 
   ngOnInit() {
     this.hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+    this.http.post<String[]>(
+      'http://agregadorpolitico.com:8000/access', 
+      JSON.stringify(
+        {
+          "hash": this.hash,
+          "origem": this.origem
+        }
+      ),
+      {
+        headers: { 'Content-Type': 'application/json' }, 
+      }
+    ).subscribe((resposta: String[]) => {
+      console.log('access' + resposta);
+    });
+
     this.form = this.formBuilder.group({
       nome: [''],
       comentario: [''],
@@ -63,14 +79,6 @@ export class AppComponent {
       console.log(this.perguntas);
       console.log(this.form.value);
       this.respostaServidor = new Array();
-      
-      try {
-        this.http.get(
-          'http://bit.ly/3s1Zea9',
-        ).subscribe(error => console.log(''));
-      } catch {
-        console.log('bitly gambs')
-      }
 
       this.http.post<String[]>(
         'http://agregadorpolitico.com:8000/match', 
@@ -79,7 +87,7 @@ export class AppComponent {
           headers: { 'Content-Type': 'application/json' }, 
         }
       ).subscribe((resposta: String[]) => {
-        console.log(resposta);
+        console.log('submit' + resposta);
         this.respostaServidor = resposta;
       });
     }
@@ -132,8 +140,7 @@ export class AppComponent {
         headers: { 'Content-Type': 'application/json' }, 
       }
     ).subscribe((resposta: String[]) => {
-      console.log(resposta);
-      this.respostaServidor = resposta;
+      console.log('question' + resposta);
     });
   }
 }
