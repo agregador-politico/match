@@ -26,33 +26,10 @@ export class AppComponent {
     private router: Router, 
     private http: HttpClient) {
       this.popularQuestionario();
-      this.route.queryParams.subscribe(params => {
-        this.origem = params['origem'];
-        if (!this.origem) {
-          this.origem = 'Direto';
-        }
-        console.log(this.origem);
-    });
+      this.hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   }
 
   ngOnInit() {
-    this.hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-    this.http.post<String[]>(
-      'http://agregadorpolitico.com:8000/access', 
-      JSON.stringify(
-        {
-          "hash": this.hash,
-          "origem": this.origem
-        }
-      ),
-      {
-        headers: { 'Content-Type': 'application/json' }, 
-      }
-    ).subscribe((resposta: String[]) => {
-      console.log('access' + resposta);
-    });
-
     this.form = this.formBuilder.group({
       nome: [''],
       comentario: [''],
@@ -68,6 +45,41 @@ export class AppComponent {
       'pergunta-10': [''],
       'pergunta-11': [''],
       'pergunta-12': [''],
+    });
+  }
+
+  primeiroAcesso: boolean = true;
+  ngAfterViewInit() {
+    console.log(this.route.queryParams);
+    this.route.queryParams.subscribe(params => {
+      this.origem = params['origem'];
+      if (!this.origem ) {
+        this.origem = 'Direto';
+      } 
+      if (!this.primeiroAcesso) {
+        this.registraAcesso();
+      }
+
+      this.primeiroAcesso = false;
+    });
+
+  }
+
+  private registraAcesso() {
+    console.log(this.origem);
+    this.http.post<String[]>(
+      'http://agregadorpolitico.com:8000/access', 
+      JSON.stringify(
+        {
+          "hash": this.hash,
+          "origem": this.origem
+        }
+      ),
+      {
+        headers: { 'Content-Type': 'application/json' }, 
+      }
+    ).subscribe((resposta: String[]) => {
+      console.log('access' + resposta);
     });
   }
 
